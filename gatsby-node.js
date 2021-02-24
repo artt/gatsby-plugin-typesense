@@ -93,11 +93,12 @@ exports.onPostBuild = async (
     server,
     collectionSchema,
     publicDir,
+    excludeDir,
     generateNewCollectionName = utils.generateNewCollectionName,
   }
 ) => {
   reporter.verbose("[Typesense] Getting list of HTML files")
-  const htmlFiles = await utils.getHTMLFilesRecursively(publicDir)
+  const htmlFiles = await utils.getHTMLFilesRecursively(publicDir, excludeDir)
 
   const typesense = new TypesenseClient(server)
   const newCollectionName = generateNewCollectionName(collectionSchema)
