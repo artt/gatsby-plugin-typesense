@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "typesense": "^0.8.0"
+    "typesense": "^0.8.0",
+    "wordcut": "^0.9.1"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.10.2"

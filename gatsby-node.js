@@ -2,6 +2,7 @@ const fs = require("fs").promises
 const cheerio = require("cheerio")
 const TypesenseClient = require("typesense").Client
 const TYPESENSE_ATTRIBUTE_NAME = "data-typesense-field"
+const wordcut = require("wordcut");
 
 let utils = require("./lib/utils")
 
@@ -36,7 +37,7 @@ async function indexContentInTypesense({
   let typesenseDocument = {}
   $(`[${TYPESENSE_ATTRIBUTE_NAME}]`).each((index, element) => {
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
-    const attributeValue = $(element).text()
+    const attributeValue = wordcut.cut($(element).text(), " ")
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
     )
