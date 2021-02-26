@@ -38,7 +38,7 @@ async function indexContentInTypesense({
   $(`[${TYPESENSE_ATTRIBUTE_NAME}]`).each((index, element) => {
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
     const tmp = $(element).text()
-    console.log(wordcut.cut(tmp))
+    console.log('>-', tmp)
     const attributeValue = tmp
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
