@@ -4,6 +4,8 @@ const TypesenseClient = require("typesense").Client
 const TYPESENSE_ATTRIBUTE_NAME = "data-typesense-field"
 const wordcut = require("wordcut");
 
+wordcut.init();
+
 let utils = require("./lib/utils")
 
 function typeCastValue(fieldDefinition, attributeValue) {
@@ -38,7 +40,7 @@ async function indexContentInTypesense({
   $(`[${TYPESENSE_ATTRIBUTE_NAME}]`).each((index, element) => {
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
     const tmp = $(element).text()
-    console.log('>-', tmp)
+    console.log('>-', wordcut.cut(tmp))
     const attributeValue = tmp
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
