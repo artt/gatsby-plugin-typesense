@@ -41,7 +41,8 @@ async function indexContentInTypesense({
   $(`[${TYPESENSE_ATTRIBUTE_NAME}]`).each((index, element) => {
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
     const tmp = $(element).text()
-    const attributeValue = fieldsToSegment.includes(attributeName) ? wordcut.cut(tmp, ' ') : tmp
+    const attributeValue = tmp
+    // const attributeValue = fieldsToSegment.includes(attributeName) ? wordcut.cut(tmp, ' ') : tmp
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
     )
@@ -58,6 +59,17 @@ async function indexContentInTypesense({
     } else {
       typesenseDocument[attributeName] = typeCastValue(fieldDefinition, attributeValue);
     }
+
+    //
+    if (fieldsToSegment.includes(attributeName)) {
+      if (fieldDefinition.type.includes("[]")) {
+        typesenseDocument["_" + attributeName] = typesenseDocument["_" + attributeName] || []
+        typesenseDocument["_" + attributeName].push(typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " ")))
+      } else {
+        typesenseDocument["_" + attributeName] = typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " "));
+      }  
+    }
+
   })
 
   if (utils.isObjectEmpty(typesenseDocument)) {
@@ -109,6 +121,13 @@ exports.onPostBuild = async (
   const typesense = new TypesenseClient(server)
   const newCollectionName = generateNewCollectionName(collectionSchema)
   const newCollectionSchema = { ...collectionSchema }
+  //
+  for (let i = 0; i < fieldsToSegment.length; i ++) {
+    let obj = newCollectionSchema.fields.filter(f => f.name === fieldsToSegment[i])[0]
+    obj.name = "_" + obj.name
+    newCollectionSchema.fields.push(obj)
+  }
+  //
   newCollectionSchema.name = newCollectionName
 
   try {
