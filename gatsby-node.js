@@ -99,7 +99,7 @@ exports.onPostBuild = async (
     collectionSchema,
     publicDir,
     excludeDir,
-    fieldsToSegment,
+    fieldsToSegment=[],
     generateNewCollectionName = utils.generateNewCollectionName,
   }
 ) => {
