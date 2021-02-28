@@ -123,9 +123,10 @@ exports.onPostBuild = async (
   const newCollectionSchema = { ...collectionSchema }
   //
   for (let i = 0; i < fieldsToSegment.length; i ++) {
-    let obj = newCollectionSchema.fields.filter(f => f.name === fieldsToSegment[i])[0]
-    obj.name = "_" + obj.name
-    newCollectionSchema.fields.push(obj)
+    const obj = newCollectionSchema.fields.filter(f => f.name === fieldsToSegment[i])[0]
+    let newObj = {...obj}
+    newObj.name = "_" + newObj.name
+    newCollectionSchema.fields.push(newObj)
   }
   //
 
