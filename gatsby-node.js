@@ -33,6 +33,7 @@ async function indexContentInTypesense({
   typesense,
   newCollectionSchema,
   reporter,
+  fieldsToSegment,
 }) {
   const $ = cheerio.load(fileContents)
 
@@ -40,7 +41,7 @@ async function indexContentInTypesense({
   $(`[${TYPESENSE_ATTRIBUTE_NAME}]`).each((index, element) => {
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
     const tmp = $(element).text()
-    const attributeValue = attributeName[0] === '_' ? wordcut.cut(tmp, ' ') : tmp
+    const attributeValue = fieldsToSegment.includes(attributeName) ? wordcut.cut(tmp, ' ') : tmp
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
     )
@@ -98,6 +99,7 @@ exports.onPostBuild = async (
     collectionSchema,
     publicDir,
     excludeDir,
+    fieldsToSegment,
     generateNewCollectionName = utils.generateNewCollectionName,
   }
 ) => {
@@ -128,6 +130,7 @@ exports.onPostBuild = async (
       typesense,
       newCollectionSchema,
       reporter,
+      fieldsToSegment
     })
   }
 
