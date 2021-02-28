@@ -128,6 +128,9 @@ exports.onPostBuild = async (
     newCollectionSchema.fields.push(obj)
   }
   //
+
+  console.log(newCollectionSchema)
+
   newCollectionSchema.name = newCollectionName
 
   try {
