@@ -42,8 +42,8 @@ async function indexContentInTypesense({
     const attributeName = $(element).attr(TYPESENSE_ATTRIBUTE_NAME)
     const tmp = $(element).text()
     // const attributeValue = tmp
-    const attributeValue = fieldsToSegment.includes(attributeName) ? wordcut.cut(tmp, ' ') : tmp
-    // const attributeValue = attributeName[0] === "_" ? wordcut.cut(tmp, ' ') : tmp
+    // const attributeValue = fieldsToSegment.includes(attributeName) ? wordcut.cut(tmp, ' ') : tmp
+    const attributeValue = attributeName[0] === "_" ? wordcut.cut(tmp, ' ') : tmp
     const fieldDefinition = newCollectionSchema.fields.find(
       f => f.name === attributeName
     )
@@ -62,7 +62,9 @@ async function indexContentInTypesense({
     }
 
     //
+    console.log("--", attributeName)
     if (fieldsToSegment.includes(attributeName)) {
+      console.log(`${attributeName} needs to be segmented... will segment`)
       if (fieldDefinition.type.includes("[]")) {
         typesenseDocument["_" + attributeName] = typesenseDocument["_" + attributeName] || []
         typesenseDocument["_" + attributeName].push(typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " ")))
