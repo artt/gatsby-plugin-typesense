@@ -62,7 +62,6 @@ async function indexContentInTypesense({
     }
 
     //
-    console.log("--", attributeName)
     if (fieldsToSegment.includes(attributeName)) {
       console.log(`${attributeName} needs to be segmented... will segment`)
       if (fieldDefinition.type.includes("[]")) {
@@ -70,7 +69,8 @@ async function indexContentInTypesense({
         typesenseDocument["_" + attributeName].push(typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " ")))
       } else {
         typesenseDocument["_" + attributeName] = typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " "));
-      }  
+      }
+      console.log('Done segmenting: ', typesenseDocument["_" + attributeName])  
     }
 
   })
