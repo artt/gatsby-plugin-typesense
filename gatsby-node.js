@@ -63,14 +63,14 @@ async function indexContentInTypesense({
 
     //
     if (fieldsToSegment.includes(attributeName)) {
-      console.log(`${attributeName} needs to be segmented... will segment`)
+      // console.log(`${attributeName} needs to be segmented... will segment`)
       if (fieldDefinition.type.includes("[]")) {
         typesenseDocument["_" + attributeName] = typesenseDocument["_" + attributeName] || []
         typesenseDocument["_" + attributeName].push(typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " ")))
       } else {
         typesenseDocument["_" + attributeName] = typeCastValue(fieldDefinition, wordcut.cut(attributeValue, " "));
       }
-      console.log('Done segmenting: ', typesenseDocument["_" + attributeName])  
+      // console.log('Done segmenting: ', typesenseDocument["_" + attributeName])  
     }
 
   })
@@ -133,7 +133,7 @@ exports.onPostBuild = async (
   }
   //
 
-  console.log(newCollectionSchema)
+  // console.log(newCollectionSchema)
 
   newCollectionSchema.name = newCollectionName
 
